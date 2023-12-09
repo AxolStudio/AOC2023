@@ -1,3 +1,4 @@
+import hl.F64;
 using StringTools;
 
 class Main {
@@ -42,32 +43,33 @@ class Main {
 				dist += d + "";
 		}
 
-		var longRace:Race = new Race(Std.parseInt(time), Std.parseInt(dist));
+		var longRace:Race = new Race(Std.parseFloat(time), Std.parseFloat(dist));
 
 		trace("Part 2", longRace.getNumberOfWins());
 	}
 }
 
 class Race {
-	public var maxTime:Int = -1;
-	public var distanceToBeat:Int = -1;
+	public var maxTime:F64 = -1;
+	public var distanceToBeat:F64 = -1;
 
-	public function new(maxTime:Int, distanceToBeat:Int) {
+	public function new(maxTime:F64, distanceToBeat:F64) {
 		this.maxTime = maxTime;
 		this.distanceToBeat = distanceToBeat;
+		trace(maxTime, distanceToBeat);
 	}
 
-	inline private function getLowerBound():Int {
+	inline private function getLowerBound():F64 {
 		return Math.ceil((maxTime - Math.sqrt(Math.pow(maxTime, 2) - 4 * (distanceToBeat + 1))) / 2);
 	}
 
-	inline private function getUpperBound():Int {
+	inline private function getUpperBound():F64 {
 		return Math.floor((maxTime + Math.sqrt(Math.pow(maxTime, 2) - 4 * (distanceToBeat + 1))) / 2);
 	}
 
-	public function getNumberOfWins():Int {
-		var lowerBound:Int = getLowerBound();
-		var upperBound:Int = getUpperBound();
+	public function getNumberOfWins():F64 {
+		var lowerBound:F64 = getLowerBound();
+		var upperBound:F64 = getUpperBound();
 
 		return upperBound - lowerBound + 1;
 	}
