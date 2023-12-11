@@ -12,7 +12,7 @@ class Main {
 	public static var nodePairs:Array<NodePair> = [];
 
 	static function main() {
-		var input:String = sys.io.File.getContent('test-input.txt');
+		var input:String = sys.io.File.getContent('input.txt');
 
 		widthInCharacters = input.indexOf('\r\n');
 		heightInCharacters = input.split('\r\n').length;
@@ -44,53 +44,19 @@ class Main {
 		var enclosed:Int = 0;
 
 		for (y in 0...heightInCharacters) {
-			var row:Array<Node> = pathNodes.filter((n) -> {
-				return n.y == y && n.type != "-";
-			});
-
-			if (row.length > 0) {
-				ArraySort.sort(row, sortNode);
-
-				trace(row);
-
-				var i:Int = -1;
-				while (i < row.length - 2) {
-					i++;
-					var left:Node = row[i];
-
-					var right:Node = row[i + 1];
-					if (left.type == "F" || left.type == "L")
-						continue;
-
-					// if (right.type == "J" || right.type == "7")
-					// 	continue;
-					// if (right.x - left.x == 1)
-					// 	continue;
-
-					// nodePairs.push(new NodePair(left, right));
-
-					trace(left, " -> ", right);
-
-					enclosed += right.x - left.x - 1;
-				}
-
-				// if (row.length % 2 == 0) {
-				// 	row.splice(Std.int(row.length / 2), 1);
-				// }
-
-				// for (i in 0...Std.int(row.length / 2)) {
-				// 	var left:Node = row[i * 2];
-				// 	var right:Node = row[i * 2 + 1];
-				// 	if (left.type == "F" || left.type == "L" || right.type == "J" || right.type == "7" || right.x - left.x == 1) {
-				// 		continue;
-				// 	}
-
-				// 	// nodePairs.push(new NodePair(left, right));
-
-				// 	trace(left, " -> ", right);
-
-				// 	enclosed += right.x - left.x - 1;
-				// }
+			var windingCount:Int = 0;
+			for (x in 0...widthInCharacters) {
+				var node:Node = pathNodes.filter((n) -> {
+					return n.x == x && n.y == y;
+				})[0];
+				if (node != null) {
+					
+					if (node.type == "|" || node.type == "F" || node.type == "7") {
+						windingCount++;
+						trace(node);
+					};
+				} else if (windingCount % 2 == 1)
+					enclosed++;
 			}
 		}
 
